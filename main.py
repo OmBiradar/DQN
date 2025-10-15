@@ -34,7 +34,7 @@ BEST_PONG = common.Hyperparams(
 
 def train(params: common.Hyperparams,
           device: torch.device, _: dict) -> tt.Optional[int]:
-    env = gym.make(params.env_name)
+    env = gym.make(params.env_name, render_mode="human")
     env = ptan.common.wrappers.wrap_dqn(env)
 
     net = dqn_model.DQN(env.observation_space.shape, env.action_space.n).to(device)

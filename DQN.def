@@ -1,0 +1,17 @@
+Bootstrap: localimage
+From: scratch
+
+%files
+    DQN /DQN
+    .venv /root/.venv
+
+%environment
+    export PATH=/root/.venv/bin:$PATH
+    export PYTHONPATH=/DQN:$PYTHONPATH
+
+%post
+    echo "Container setup complete."
+
+%runscript
+    # Default command
+    exec python /DQN/main.py "$@"

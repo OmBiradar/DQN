@@ -1,0 +1,6 @@
+Bootstrap: docker
+From: python:3.9
+
+%runscript
+    echo "Container is running Python:"
+    python --version
