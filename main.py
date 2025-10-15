@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import gymnasium as gym # Core RL library provides environment to develop and test RL models
+import ale_py
 import ptan # PyTorch add-on which provides RL specific utilities like Replay buffers, agent wrappers etc.
 import typing as tt # makes it easy to debug by providing type hinting
 
@@ -11,12 +12,12 @@ from ignite.engine import Engine # Works with PyTorch to simplify training and v
 
 from lib import dqn_model, common # Local model imports
 
-import ptan.ignite as ptan_ignite
+import ignite as ptan_ignite
 
 NAME = "01_baseline"
 
 BEST_PONG = common.Hyperparams(
-    env_name="PongNoFrameskip-v4",
+    env_name="ale_py:ALE/Pong-v5",
     stop_reward=18.0,
     run_name="pong",
     replay_size=100_000,
@@ -34,6 +35,7 @@ BEST_PONG = common.Hyperparams(
 
 def train(params: common.Hyperparams,
           device: torch.device, _: dict) -> tt.Optional[int]:
+    gym.register_envs(ale_py)
     env = gym.make(params.env_name, render_mode="human")
     env = ptan.common.wrappers.wrap_dqn(env)
 
@@ -44,7 +46,7 @@ def train(params: common.Hyperparams,
     agent = ptan.agent.DQNAgent(net, selector, device=device)
 
     exp_source = ptan.experience.ExperienceSourceFirstLast(
-        env, agent, gamma=params.gamma, env_seed=common.SEED)
+        env, agent, gamma=params.gamma)
     buffer = ptan.experience.ExperienceReplayBuffer(
         exp_source, buffer_size=params.replay_size)
     optimizer = optim.Adam(net.parameters(), lr=params.learning_rate)

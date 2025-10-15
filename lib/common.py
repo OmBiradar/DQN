@@ -8,7 +8,7 @@ import dataclasses
 from datetime import timedelta, datetime
 import typing as tt
 
-import ptan.ignite as ptan_ignite
+import ignite as ptan_ignite
 from ptan.actions import EpsilonGreedyActionSelector
 from ptan.experience import ExperienceFirstLast, \
     ExperienceSourceFirstLast, ExperienceReplayBuffer
@@ -47,7 +47,7 @@ class Hyperparams:
 
 GAME_PARAMS = {
     'pong': Hyperparams(
-        env_name="PongNoFrameskip-v4",
+        env_name="ALE/Pong‑v5",
         stop_reward=18.0,
         run_name="pong",
         replay_size=100_000,
