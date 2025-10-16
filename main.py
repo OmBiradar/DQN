@@ -76,7 +76,7 @@ def train(params: common.Hyperparams,
           device: torch.device, _: dict) -> tt.Optional[int]:
     # 1) Base env with frameskip disabled (AtariPreprocessing will apply frameskip=4)
     gym.register_envs(ale_py)
-    env = gym.make(params.env_name, render_mode="human", frameskip=1)  # avoid double frameskip [web:133][web:156]
+    env = gym.make(params.env_name, frameskip=1)  # avoid double frameskip [web:133][web:156]
 
     # 2) Gymnasium-native Atari preprocessing (grayscale, 84x84, frameskip=4, life-loss terminals)
     if HAVE_ATARI_PRE:
