@@ -8,7 +8,7 @@ import dataclasses
 from datetime import timedelta, datetime
 import typing as tt
 
-import ignite as ptan_ignite
+from lib import ignite_rl as ptan_ignite
 from ptan.actions import EpsilonGreedyActionSelector
 from ptan.experience import ExperienceFirstLast, \
     ExperienceSourceFirstLast, ExperienceReplayBuffer
@@ -181,8 +181,10 @@ def setup_ignite(
         print("Game solved in %s, after %d episodes and %d iterations!" % (
             timedelta(seconds=int(passed)), trainer.state.episode,
             trainer.state.iteration))
-        trainer.should_terminate = True
+        # trainer.should_terminate = True
+        # trainer.state.solved = True
         trainer.state.solved = True
+        trainer.terminate()
 
     now = datetime.now().isoformat(timespec='minutes').replace(':', '')
     logdir = f"runs/{now}-{params.run_name}-{run_name}"
